@@ -2,7 +2,7 @@ import random
 from colorama import Fore,Back,Style
 
 
-print('Welcome to our Wordle Game')
+print("Welcome to Omar and Jason's Wordle Game")
 word_file = open('sgb-words.txt', 'r') # Accessing txt file with all 5 letter words
 
 with open('sgb-words.txt', 'r') as word_file:  # Using with statement for better file handling
