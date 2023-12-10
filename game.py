@@ -6,7 +6,7 @@ from colorama import Fore,Back,Style
 from words import WORDS
 
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (100, 40)  # Example positions
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (100, 40)  # Boundary positoin for pygame window
 
 pygame.init()
 
@@ -35,8 +35,8 @@ FILLED_OUTLINE = "#878a8c"
 
 ALPHABET = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
 
-GUESSED_LETTER_FONT = pygame.font.Font("assets/FreeSansBold.otf", 35)
-AVAILABLE_LETTER_FONT = pygame.font.Font("assets/FreeSansBold.otf", 20)
+GUESSED_LETTER_FONT = pygame.font.Font("assets/FreeSansBold.otf", 35) # Setting font of the actual game
+AVAILABLE_LETTER_FONT = pygame.font.Font("assets/FreeSansBold.otf", 20) # Setting font of the keyboard at the bottom
 
 SCREEN.fill("white")
 SCREEN.blit(BACKGROUND, BACKGROUND_RECT)
@@ -52,7 +52,7 @@ guesses = [[]] * 6
 
 current_guess = []
 current_guess_string = ""
-current_letter_bg_x = 162
+current_letter_bg_x = 162 # Starting position for the first letter on the x-axis
 
 indicators = []
 
@@ -64,10 +64,10 @@ class Letter:
         self.text_color = "black"
         self.bg_position = bg_position
         self.bg_x = bg_position[0]
-        self.bg_y = bg_position[1]+23
+        self.bg_y = bg_position[1]+23 # Incrementation for the starting position of each box to make sure it aligns with background
         self.bg_rect = (bg_position[0], self.bg_y, LETTER_SIZE, LETTER_SIZE)
         self.text = text
-        self.text_position = (self.bg_x+25, self.bg_position[1]+48)
+        self.text_position = (self.bg_x+25, self.bg_position[1]+48) #The starting position inside each box for the letters
         self.text_surface = GUESSED_LETTER_FONT.render(self.text, True, self.text_color)
         self.text_rect = self.text_surface.get_rect(center=self.text_position)
     def draw(self):
@@ -155,9 +155,9 @@ def check_guess(guess_to_check):
     guesses_count += 1
     current_guess = []
     current_guess_string = ""
-    current_letter_bg_x = 162
+    current_letter_bg_x = 162 #Resetting starting position on x-axis after a guess is made
 
-    if guesses_count == 6 and game_result == "":
+    if guesses_count == 6 and game_result == "": # Game logic checking if user wasn't able to guess the word
         game_result = "L"
 
 def play_again():
@@ -189,7 +189,7 @@ def create_new_letter():
     # Creates a new letter and adds it to the guess.
     global current_guess_string, current_letter_bg_x
     current_guess_string += key_pressed
-    new_letter = Letter(key_pressed, (current_letter_bg_x, guesses_count*75+LETTER_Y_SPACING))
+    new_letter = Letter(key_pressed, (current_letter_bg_x, guesses_count*75+LETTER_Y_SPACING)) #Incremmentation of the y-axis after each successful guess
     current_letter_bg_x += LETTER_X_SPACING
     guesses[guesses_count].append(new_letter)
     current_guess.append(new_letter)
@@ -204,7 +204,7 @@ def delete_letter():
     current_guess.pop()
     current_letter_bg_x -= LETTER_X_SPACING
 while True:
-    pygame.draw.rect(SCREEN, (0, 255, 0), SCREEN.get_rect(), 5)  # Draw a green border
+    pygame.draw.rect(SCREEN, (0, 255, 0), SCREEN.get_rect(), 5)  # Draw a green border as a nice touch
     pygame.display.flip()
     if game_result != "":
         play_again()
