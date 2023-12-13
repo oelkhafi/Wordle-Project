@@ -118,12 +118,19 @@ for i in range(3):
 def check_guess(guess_to_check):
     # Goes through each letter and checks if it should be green, yellow, or grey.
     global current_guess, current_guess_string, guesses_count, current_letter_bg_x, game_result
+    
+    # Keep track of the frequency of each letter in the random_word
+    letter_count = {}
+    for letter in random_word:
+        letter_count[letter] = letter_count.get(letter, 0) + 1
+
     game_decided = False
-    for i in range(5):
+    for i in range(5):  # A check for GREEN only first
         lowercase_letter = guess_to_check[i].text.lower()
         if lowercase_letter in random_word:
             if lowercase_letter == random_word[i]:
                 guess_to_check[i].bg_color = GREEN
+                letter_count[lowercase_letter] -= 1
                 for indicator in indicators:
                     if indicator.text == lowercase_letter.upper():
                         indicator.bg_color = GREEN
@@ -131,27 +138,39 @@ def check_guess(guess_to_check):
                 guess_to_check[i].text_color = "white"
                 if not game_decided:
                     game_result = "W"
-            else:
-                guess_to_check[i].bg_color = YELLOW
+
+    for i in range(5):
+        lowercase_letter = guess_to_check[i].text.lower()
+       
+        if guess_to_check[i].bg_color != GREEN:  # Skip already green letters
+            if lowercase_letter in letter_count: # Checks to see if the letter is a letter to be considered
+                if letter_count[lowercase_letter] > 0 and lowercase_letter in random_word: # Check if the letter is not already used up in other correct positions
+                    guess_to_check[i].bg_color = YELLOW
+                    letter_count[lowercase_letter] -= 1
+                    guess_to_check[i].bg_color = YELLOW
+                    for indicator in indicators:
+                        if indicator.text == lowercase_letter.upper():
+                            indicator.bg_color = YELLOW
+                            indicator.draw()
+                    guess_to_check[i].text_color = "white"
+                    game_result = ""
+                    game_decided = True
+                else: # Makes it gray if its a letter fails inner if checking if the letter is used up in another position
+                    guess_to_check[i].bg_color = GREY
+                    guess_to_check[i].text_color = "white" # Does not update indicators because this must mean they are already a different color (yellow or green)
+                    game_result = ""
+            else: # Makes it gray ifs not a letter included in the letter count (AKA not in the word)
+                guess_to_check[i].bg_color = GREY
                 for indicator in indicators:
-                    if indicator.text == lowercase_letter.upper():
-                        indicator.bg_color = YELLOW
+                    if indicator.text == lowercase_letter.upper(): #updates indicators to grey meaning this letter is definetley not in the word
+                        indicator.bg_color = GREY
                         indicator.draw()
                 guess_to_check[i].text_color = "white"
                 game_result = ""
                 game_decided = True
-        else:
-            guess_to_check[i].bg_color = GREY
-            for indicator in indicators:
-                if indicator.text == lowercase_letter.upper():
-                    indicator.bg_color = GREY
-                    indicator.draw()
-            guess_to_check[i].text_color = "white"
-            game_result = ""
-            game_decided = True
         guess_to_check[i].draw()
         pygame.display.update()
-    
+        
     guesses_count += 1
     current_guess = []
     current_guess_string = ""
