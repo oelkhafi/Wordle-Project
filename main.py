@@ -15,7 +15,7 @@ print("""
       """)
 time.sleep(2)
 print("by Omar Elkhafif and Jason McCauley")
-time.sleep(2)
+time.sleep(1)
 
 def main():
     keepGoing = True
@@ -36,20 +36,28 @@ def main():
         word_file = open(str(choice) + '_letter_word.txt', 'r') # accessing txt file with all 'choice' letter words
         with open(str(choice) + '_letter_word.txt', 'r') as word_file:  # using with statement for better file handling
             words = [line.strip() for line in word_file.readlines()]
-        random_word = random.choice(words)
+        random_word = random.choice(words) #generating random word from the accessed file
 
         while True:
             multiplayer = input("Would you like to play local multiplayer?\n (y) Yes\n (n) No\n")
             if multiplayer == 'y':
                 print("Player one, get ready. It's your turn!")
                 time.sleep(2)
-                gameLogic(choice, words, random_word)
-                time.sleep(5)
+                player1_counter = gameLogic(choice, words, random_word)
+                time.sleep(2)
                 os.system('cls')
 
                 print("Player two, get ready. It's now your turn!")
                 time.sleep(2)
-                gameLogic(choice, words, random_word)
+                player2_counter = gameLogic(choice, words, random_word)
+                
+                # Checking for Winner!
+                if player1_counter > player2_counter:
+                    print("Player 2 guessed the word in less attempts!")
+                elif player2_counter > player1_counter:
+                    print("Player 1 guessed the word in less attempts!")
+                else:
+                    print("Draw!")
                 break
             elif multiplayer == 'n':
                 gameLogic(choice, words, random_word)
@@ -131,5 +139,5 @@ def gameLogic(choice, words, random_word):
                 modified_guess_str = ''.join(modified_guess)
                 print(modified_guess_str)
 
-        return   
+        return  guess_counter 
 main()
