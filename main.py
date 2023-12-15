@@ -53,12 +53,16 @@ def main():
                 
                 # Checking for Winner!
                 if player1_counter > player2_counter:
-                    print("Player 2 guessed the word in less attempts!")
+                    print("Player 2 wins! They guessed the word in less attempts.")
+                    time.sleep(2)
                 elif player2_counter > player1_counter:
-                    print("Player 1 guessed the word in less attempts!")
+                    print("Player 1 wins! They guessed the word in less attempts.")
+                    time.sleep(2)
                 else:
-                    print("Draw!")
+                    print("Tie game! Neither player guessed the word in less attempts.")
+                    time.sleep(2)
                 break
+
             elif multiplayer == 'n':
                 gameLogic(choice, words, random_word)
                 break
@@ -139,5 +143,5 @@ def gameLogic(choice, words, random_word):
                 modified_guess_str = ''.join(modified_guess)
                 print(modified_guess_str)
 
-        return  guess_counter 
+        return guess_counter 
 main()
