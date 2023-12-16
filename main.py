@@ -87,7 +87,6 @@ def main():
 def gameLogic(choice, words, random_word):
     print("You will now be prompted to guess the chosen " + str(choice) + " letter word. Good luck!")
     print("_ " * choice)
-    print(str(random_word))
     guess_counter = 0
     time.sleep(3)
     print("Please enter your guess for the word. Remember this must be a "+ str(choice) + " letter word that exists in the English Dictionary.")
@@ -113,8 +112,6 @@ def gameLogic(choice, words, random_word):
             time.sleep(2) 
             break
         elif guess_counter == choice + 1:
-            modified_guess_str = ''.join(modified_guess)
-            print(modified_guess_str)
             print("Sorry, you did not guess the word in time!")
             time.sleep(2)
             print('The word was "' + str(random_word) + '".')
