@@ -52,12 +52,14 @@ def main():
                 player2_counter = gameLogic(choice, words, random_word)
                 
                 # Checking for Winner!
-                if player1_counter > player2_counter:
+                if player1_counter > player2_counter and player2_counter:
                     print("Player 2 guessed the word in less attempts!")
-                elif player2_counter > player1_counter:
+                elif player2_counter > player1_counter and player1_counter:
                     print("Player 1 guessed the word in less attempts!")
+                elif player1_counter == 8 and player2_counter == 8: # a counter value of 8 means the word wasn't guessed
+                    print("Neither of you guessed the word correctly!")
                 else:
-                    print("Draw!")
+                    print("You both guessed it in the same amount of tries!!")
                 break
             elif multiplayer == 'n':
                 gameLogic(choice, words, random_word)
@@ -74,6 +76,7 @@ def main():
                 break
             elif again == 'n':
                 keepGoing = False
+                print("Thanks for playing!")
                 break
             else:
                 print("Please enter a valid choice.")
@@ -112,6 +115,7 @@ def gameLogic(choice, words, random_word):
                 time.sleep(2)
                 print('The word was "' + str(random_word) + '".')
                 time.sleep(2)
+                guess_counter = 8 # Placeholder guess counter value for not guessing the word
                 break
             else:
                 modified_guess = []
