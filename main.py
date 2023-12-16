@@ -53,13 +53,17 @@ def main():
                 
                 # Checking for Winner!
                 if player1_counter > player2_counter and player2_counter:
-                    print("Player 2 guessed the word in less attempts!")
+                    print("Player 2 is the winner! They guessed the word in less attempts!")
+                    time.sleep(2)
                 elif player2_counter > player1_counter and player1_counter:
-                    print("Player 1 guessed the word in less attempts!")
+                    print("Player 1 is the winner! They guessed the word in less attempts!")
+                    time.sleep(2)
                 elif player1_counter == 8 and player2_counter == 8: # a counter value of 8 means the word wasn't guessed
-                    print("Neither of you guessed the word correctly!")
+                    print("Tie game! Neither player guessed the word correctly!")
+                    time.sleep(2)
                 else:
-                    print("You both guessed it in the same amount of tries!!")
+                    print("Tie game! Both players guessed the word in the same number of tries!")
+                    time.sleep(2)
                 break
             elif multiplayer == 'n':
                 gameLogic(choice, words, random_word)
@@ -84,64 +88,64 @@ def main():
                 continue
 
 def gameLogic(choice, words, random_word):
-        print("You will now be prompted to guess the chosen " + str(choice) + " letter word. Good luck!")
-        print("_ " * choice)
-        guess_counter = 0
-        time.sleep(3)
-        print("Please enter your guess for the word. Remember this must be a "+ str(choice) + " letter word that exists in the English Dictionary.")
-        time.sleep(2)
+    print("You will now be prompted to guess the chosen " + str(choice) + " letter word. Good luck!")
+    print("_ " * choice)
+    guess_counter = 0
+    time.sleep(3)
+    print("Please enter your guess for the word. Remember this must be a "+ str(choice) + " letter word that exists in the English Dictionary.")
+    time.sleep(2)
 
-        while guess_counter < (choice + 1):
-            guess_counter += 1
-            while True:
-                guess = input("This is guess number " + str(guess_counter) + ".\n").lower()
- 
-                if len(guess) != choice:
-                    print("Remember, your guess must be exactly "+ str(choice) + " letters. Please try again.")
-                    continue
+    while guess_counter < (choice + 1):
+        guess_counter += 1
+        while True:
+            guess = input("This is guess number " + str(guess_counter) + ".\n").lower()
 
-                if guess not in words:
-                    print("Your guess is either not a valid English word or not in the list. Please try again.")
-                    continue
-                break
-            
-            if guess == random_word:
-                print(Back.GREEN + random_word + Style.RESET_ALL)
-                print("Congratulations! You correctly guessed the word!")
-                time.sleep(2)
-                break
-            elif guess_counter == choice + 1:
-                print("Sorry, you did not guess the word in time!")
-                time.sleep(2)
-                print('The word was "' + str(random_word) + '".')
-                time.sleep(2)
-                guess_counter = 8 # Placeholder guess counter value for not guessing the word
-                break
-            else:
-                modified_guess = []
-                matched_indices = set()
-                for i, letter in enumerate(guess):
-                    if letter == random_word[i]:
-                        modified_guess.append(Back.GREEN + letter + Style.RESET_ALL)
-                        matched_indices.add(i)
-                    else:
-                        modified_guess.append(None)  # Placeholder for second pass
+            if len(guess) != choice:
+                print("Remember, your guess must be exactly "+ str(choice) + " letters. Please try again.")
+                continue
 
-                # Second pass for yellow matches
-                for i, letter in enumerate(guess):
-                    if modified_guess[i] is None:  # Check only non-green letters
-                        found = False
-                        for j in range(len(random_word)):
-                            if letter == random_word[j] and j not in matched_indices:
-                                modified_guess[i] = Back.YELLOW + letter + Style.RESET_ALL
-                                matched_indices.add(j)
-                                found = True
-                                break
-                        if not found:
-                            modified_guess[i] = letter
+            if guess not in words:
+                print("Your guess is either not a valid English word or not in the list. Please try again.")
+                continue
+            break
+        
+        if guess == random_word:
+            print(Back.GREEN + random_word + Style.RESET_ALL)
+            print("Congratulations! You correctly guessed the word!")
+            time.sleep(2)
+            break
+        elif guess_counter == choice + 1:
+            print("Sorry, you did not guess the word in time!")
+            time.sleep(2)
+            print('The word was "' + str(random_word) + '".')
+            time.sleep(2)
+            guess_counter = 8 # Placeholder guess counter value for not guessing the word
+            break
+        else:
+            modified_guess = []
+            matched_indices = set()
+            for i, letter in enumerate(guess):
+                if letter == random_word[i]:
+                    modified_guess.append(Back.GREEN + letter + Style.RESET_ALL)
+                    matched_indices.add(i)
+                else:
+                    modified_guess.append(None)  # Placeholder for second pass
 
-                modified_guess_str = ''.join(modified_guess)
-                print(modified_guess_str)
+            # Second pass for yellow matches
+            for i, letter in enumerate(guess):
+                if modified_guess[i] is None:  # Check only non-green letters
+                    found = False
+                    for j in range(len(random_word)):
+                        if letter == random_word[j] and j not in matched_indices:
+                            modified_guess[i] = Back.YELLOW + letter + Style.RESET_ALL
+                            matched_indices.add(j)
+                            found = True
+                            break
+                    if not found:
+                        modified_guess[i] = letter
 
-        return  guess_counter 
+            modified_guess_str = ''.join(modified_guess)
+            print(modified_guess_str)
+
+    return guess_counter 
 main()
